@@ -31,10 +31,12 @@ export default {
             page: page + 1,
           },
         });
-        return data?.map(({ reference }) => ({
-          value: reference,
-          label: `${reference}`,
-        })) || [];
+        return (
+          data?.map(({ reference }) => ({
+            value: reference,
+            label: `${reference}`,
+          })) || []
+        );
       },
     },
     callbackUrl: {
@@ -63,10 +65,12 @@ export default {
             page: page + 1,
           },
         });
-        return data?.map(({ id }) => ({
-          value: id,
-          label: `${id}`,
-        })) || [];
+        return (
+          data?.map(({ id }) => ({
+            value: id,
+            label: `${id}`,
+          })) || []
+        );
       },
     },
     customerID: {
@@ -78,13 +82,14 @@ export default {
           params: {
             page: page + 1,
           },
-        }); console.log(data);
+        });
+        console.log(data);
         return data?.map(({
-          id: value, email: label,
-        }) => ({
-          label,
-          value,
-        })) || [];
+            id: value, email: label,
+          }) => ({
+            label,
+            value,
+          })) || [];
       },
     },
     from: {
@@ -101,6 +106,33 @@ export default {
       type: "integer",
       label: "Max Results",
       description: "The maximum number of results to return",
+      optional: true,
+    },
+    interval: {
+      type: "string",
+      label: "Interval",
+      description: "Sets the interval on which customers on a plan are charged.",
+      options: constants.INTERVAL,
+    },
+    name: {
+      type: "string",
+      label: "Name",
+      description: "Name of the plan",
+    },
+    description: {
+      type: "string",
+      label: "Description",
+      description: "Description of the plan",
+    },
+    sendInvoices: {
+      type: "boolean",
+      label: "Send Invoices",
+      description: "Indicates whether invoices should be sent to customers subscribed to a plan.",
+    },
+    invoiceLimit: {
+      type: "integer",
+      label: "Invoice Limit",
+      description: "The maximum number times to charge customers on this plan",
       optional: true,
     },
   },
@@ -159,9 +191,14 @@ export default {
         ...args,
       });
     },
-    async *paginate({
-      resourceFn, args, max,
-    }) {
+    createPlan(args = {}) {
+      return this._makeRequest({
+        method: "POST",
+        path: "/plan",
+        ...args,
+      });
+    },
+    async *paginate({ resourceFn, args, max }) {
       args = {
         ...args,
         params: {

@@ -26,11 +26,22 @@ const CURRENCIES = [
 const STATUS = [
   "failed",
   "success",
-  "abandoned",
+  "abandoned"
+];
+
+const INTERVAL = [
+  "hourly",
+  "daily",
+  "weekly",
+  "monthly",
+  "quarterly",
+  "biannually",
+  "yearly"
 ];
 
 export default {
   DEFAULT_LIMIT,
   CURRENCIES,
   STATUS,
+  INTERVAL
 };
